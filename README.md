@@ -7,3 +7,6 @@ This tool performs Bayesian linear regression using MCMC (emcee), incorporating 
 Python libraries needed: pandas, numpy, matplotlib, emcee, corner, scipy, tqdm
 
 See notebook example for a simple run.
+
+![Example Plot](fit_results.png)
+![Example Plot](mcmc_results.png)

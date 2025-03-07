@@ -4,7 +4,9 @@ import emcee
 import corner 
 import numpy as np
 
-def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_upper, num_realizations=1000, n_walkers=10, n_steps=1000, x_min=None, x_max=None):
+def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_upper, sigma_intrinsic=0.1,
+                             num_realizations=1000, n_walkers=10, n_steps=1000, 
+                             x_min=None, x_max=None):
     """
     Performs Bayesian linear regression using emcee with asymmetric error bars.
     
@@ -46,12 +48,32 @@ def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_
         return lp + log_likelihood(theta, x, y)
 
     # Define function for Half-Gaussian sampling
-    def sample_half_gaussian(y_best, y_err_low, y_err_high):
-        """Samples y from an asymmetric Half-Gaussian distribution."""
+    def sample_half_gaussian(y_best, y_err_low, y_err_high, sigma_int=0.0):
+        """
+        Samples y from an asymmetric Half-Gaussian distribution, 
+        with optional intrinsic scatter added.
+
+        Parameters:
+        - y_best: Best-fit y value
+        - y_err_low: Lower uncertainty in y
+        - y_err_high: Upper uncertainty in y
+        - sigma_int: Intrinsic scatter (default is 0, meaning no extra scatter)
+
+        Returns:
+        - A perturbed y value incorporating both measurement uncertainty and intrinsic scatter
+        """
+
+        # Sample from asymmetric half-Gaussian
         if np.random.rand() < 0.5:
-            return y_best - abs(norm.rvs(scale=y_err_low))
+            sampled_y = y_best - abs(norm.rvs(scale=y_err_low))
         else:
-            return y_best + abs(norm.rvs(scale=y_err_high))
+            sampled_y = y_best + abs(norm.rvs(scale=y_err_high))
+
+        # Add intrinsic scatter as an extra Gaussian perturbation
+        if sigma_int > 0:
+            sampled_y += np.random.normal(0, sigma_int)
+
+        return sampled_y
 
     # Generate best-fit x range for plotting
     x_plot_min = x_min if x_min is not None else min(x)
@@ -72,11 +94,11 @@ def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_
     for _ in tqdm(range(num_realizations), desc="Running MCMC realizations"):
         # Sample x and y values from asymmetric Half-Gaussian distribution
         x_sampled = np.array([
-            sample_half_gaussian(x[i], x_err_lower[i], x_err_upper[i])
+            sample_half_gaussian(x[i], x_err_lower[i], x_err_upper[i], sigma_int=sigma_intrinsic)
             for i in range(len(x))
         ])
         y_sampled = np.array([
-            sample_half_gaussian(y[i], y_err_lower[i], y_err_upper[i])
+            sample_half_gaussian(y[i], y_err_lower[i], y_err_upper[i], sigma_int=sigma_intrinsic)
             for i in range(len(y))
         ])
         

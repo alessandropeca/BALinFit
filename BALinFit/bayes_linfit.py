@@ -22,19 +22,20 @@ def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_
     """
 
     # Define log-likelihood function
-    def log_likelihood(theta, x, y, y_err):
-        """Log-likelihood function including intrinsic scatter."""
-        intercept, slope, sigma_int = theta  # Adding intrinsic scatter
+    def log_likelihood(theta, x, y):
+        """Gaussian likelihood for linear regression"""
+        intercept, slope = theta
         model = intercept + slope * x
-        sigma_tot = np.sqrt(y_err**2 + sigma_int**2)  # Combine measurement + intrinsic scatter
-        return -0.5 * np.sum(((y - model) / sigma_tot) ** 2 + np.log(2 * np.pi * sigma_tot ** 2))
+        sigma = np.std(y)  # Approximate scatter
+        return -0.5 * np.sum(((y - model) / sigma) ** 2 + np.log(2 * np.pi * sigma ** 2))
 
     # Define log-prior function
     def log_prior(theta):
-        intercept, slope, sigma_int = theta
-        if -10 < intercept < 10 and -10 < slope < 10 and 0 < sigma_int < 2:
+        """Uniform priors on intercept and slope"""
+        intercept, slope = theta
+        if -10 < intercept < 10 and -10 < slope < 10:
             return 0.0  # Flat prior
-        return -np.inf  # Invalid range
+        return -np.inf  # Outside allowed range
 
     # Define full log-posterior function
     def log_probability(theta, x, y):
@@ -83,7 +84,7 @@ def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_
         pos = np.random.randn(n_walkers, 2)  # Random initial positions
 
         # Run MCMC using emcee
-        sampler = emcee.EnsembleSampler(n_walkers, 3, log_probability, args=(x_sampled, y_sampled, y_err_avg))
+        sampler = emcee.EnsembleSampler(n_walkers, 2, log_probability, args=(x_sampled, y_sampled))
         sampler.run_mcmc(pos, n_steps, progress=False)
 
         # Extract samples

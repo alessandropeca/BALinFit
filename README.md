@@ -13,12 +13,12 @@
 
 You can install **BALinFit** directly from GitHub:
 
-### **🔹 Option 1: Install via `pip` (Recommended)**
+### 🔹 Option 1: Install via `pip` (Recommended)**
 ```bash
 pip install git+https://github.com/alessandropeca/BALinFit.git
 ```
 
-### **🔹 Option 2: Clone and Install Locally
+### 🔹 Option 2: Clone and Install Locally
 ```bash
 git clone https://github.com/alessandropeca/BALinFit.git
 cd BALinFit
@@ -27,6 +27,6 @@ pip install .
 
 ## 📚 Python libraries needed: pandas, numpy, matplotlib, emcee, corner, scipy, tqdm
 
-## 🚀 Usage Example: see the python notebook
+## Usage Example: see the python notebook
 
 

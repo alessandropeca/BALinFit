@@ -1,0 +1,6 @@
+numpy
+emcee
+corner
+matplotlib
+tqdm
+scipy

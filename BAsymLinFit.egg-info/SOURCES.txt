@@ -1,0 +1,9 @@
+README.md
+setup.py
+BALinFit/__init__.py
+BALinFit/bayes_linfit.py
+BAsymLinFit.egg-info/PKG-INFO
+BAsymLinFit.egg-info/SOURCES.txt
+BAsymLinFit.egg-info/dependency_links.txt
+BAsymLinFit.egg-info/requires.txt
+BAsymLinFit.egg-info/top_level.txt

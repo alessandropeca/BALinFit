@@ -24,8 +24,9 @@ git clone https://github.com/alessandropeca/BALinFit.git
 cd BALinFit
 pip install .
 ```
----
-# 📚 Python libraries needed: pandas, numpy, matplotlib, emcee, corner, scipy, tqdm
+
+### 📚 Python libraries needed: pandas, numpy, matplotlib, emcee, corner, scipy, tqdm
+
 ---
 ## Usage Example: see the python notebook
 

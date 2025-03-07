@@ -1,5 +1,5 @@
 # **BALinFit: Bayesian Linear Regression with Asymmetric Errors**
-**BALinFit** is a Python package for performing **MCMC-based linear regression** while handling **asymmetric uncertainties** in both x and y directions. The method uses `emcee` for MCMC sampling and applies a **Half-Gaussian sampling approach** to propagate asymmetric errors correctly.
+**BALinFit** is a Python package for performing **MCMC-based linear regression** while handling **asymmetric uncertainties** in both x and y directions. The method uses [`emcee` documentation](https://emcee.readthedocs.io/en/stable/index.html) for MCMC sampling and applies a **Half-Gaussian sampling approach** to propagate asymmetric errors correctly.
 
 ## 🚀 Enjoy Bayesian regression with asymmetric errors! 🚀
 ## 🚧 Under heavy construction 🚧 

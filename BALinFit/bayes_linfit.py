@@ -75,6 +75,7 @@ def log_probability(theta, x, y):
 def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_upper,
                              x_upper_limits=None, x_lower_limits=None, y_upper_limits=None, y_lower_limits=None,
                              num_realizations=1000, n_walkers=10, n_steps=1000, sigma_intrinsic=0.1,
+                             burn_in=100, thin=10,
                              x_min=None, x_max=None):
 
     # Generate best-fit x range for plotting
@@ -122,7 +123,7 @@ def bayesian_regression_mcmc(x, y, x_err_lower, x_err_upper, y_err_lower, y_err_
         sampler.run_mcmc(pos, n_steps, progress=False)
 
         # Extract samples
-        samples = sampler.get_chain(discard=100, thin=10, flat=True)
+        samples = sampler.get_chain(discard=burn_in, thin=thin, flat=True)
         all_samples.append(samples)
 
         # Store median slope and intercept from this iteration
